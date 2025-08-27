@@ -1,0 +1,105 @@
+//4. Ứng dụng Quiz tương tác (Interactive Quiz Application)
+Tạo một quiz trắc nghiệm nhiều lựa chọn với bộ đếm điểm và hiển thị kết quả.
+
+HTML: Tạo câu hỏi với radio button.
+
+CSS: Tô màu khi trả lời đúng/sai.
+
+JavaScript/jQuery: Dùng jQuery để kiểm tra câu trả lời, tính điểm và hiển thị kết quả.//
+
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Interactive Quiz Application</title>
+<style>
+  body{font-family:system-ui,Arial;background:#f7fafc;margin:0;display:flex;justify-content:center;align-items:flex-start;padding:28px}
+  .card{width:100%;max-width:720px;background:#fff;padding:18px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+  h1{margin:0 0 10px}
+  .q{padding:12px;border-radius:8px;border:1px solid #eef3fb;margin-bottom:10px}
+  .options{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+  .options label{display:flex;gap:8px;align-items:center;background:#fff;padding:8px;border-radius:6px;border:1px solid #e6eefc;cursor:pointer}
+  .options input{accent-color:#2b8aef}
+  .submitRow{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+  .result{font-weight:700;padding:10px;border-radius:8px}
+  .correct{background:#e6ffef;color:#1a7f3a}
+  .incorrect{background:#fff1f0;color:#9f2b2b}
+  button{background:#2b8aef;color:#fff;border:0;padding:10px 12px;border-radius:8px;cursor:pointer}
+  @media(max-width:520px){.options label{font-size:14px}}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Interactive Quiz</h1>
+    <form id="quizForm">
+      <div id="questions"></div>
+
+      <div class="submitRow">
+        <div id="score" aria-live="polite"></div>
+        <div>
+          <button type="button" id="checkBtn">Check Answers</button>
+          <button type="button" id="resetBtn">Reset</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+<script>
+  // sample questions
+  const data = [
+    { q:'What is 2 + 2?', opts:['3','4','5'], answer:1 },
+    { q:'Which is a JS array method?', opts:['push','render','connect'], answer:0 },
+    { q:'HTML stands for?', opts:['Hyperlinks Text Markup','HyperText Markup Language','Home Tool Markup'], answer:1 }
+  ];
+
+  const qContainer = document.getElementById('questions');
+  function loadQuestions(){
+    qContainer.innerHTML = '';
+    data.forEach((item, idx)=>{
+      const block = document.createElement('div'); block.className='q';
+      block.innerHTML = `<div><strong>Q${idx+1}.</strong> ${item.q}</div>`;
+      const optsDiv = document.createElement('div'); optsDiv.className='options';
+      item.opts.forEach((o,i)=>{
+        const id = `q${idx}o${i}`;
+        const label = document.createElement('label');
+        label.innerHTML = `<input name="q${idx}" type="radio" value="${i}" id="${id}"> <span>${o}</span>`;
+        optsDiv.appendChild(label);
+      });
+      block.appendChild(optsDiv);
+      qContainer.appendChild(block);
+    });
+  }
+  loadQuestions();
+
+  document.getElementById('checkBtn').addEventListener('click', ()=>{
+    let score = 0;
+    data.forEach((item, idx)=>{
+      const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+      const parent = qContainer.children[idx];
+      parent.classList.remove('correct','incorrect');
+      if(selected){
+        const val = Number(selected.value);
+        if(val === item.answer){
+          score++; parent.classList.add('correct');
+          parent.style.borderColor = '#c7f2d8';
+        } else { parent.classList.add('incorrect'); parent.style.borderColor = '#ffdede'; }
+      } else {
+        parent.classList.add('incorrect'); parent.style.borderColor = '#ffdede';
+      }
+    });
+    const scoreDiv = document.getElementById('score');
+    scoreDiv.textContent = `Score: ${score} / ${data.length}`;
+    scoreDiv.className = score === data.length ? 'result correct' : 'result incorrect';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    document.getElementById('quizForm').reset();
+    document.getElementById('score').textContent = '';
+    Array.from(qContainer.children).forEach(c=>{ c.classList.remove('correct','incorrect'); c.style.borderColor=''; });
+  });
+</script>
+</body>
+</html>
