@@ -8,6 +8,16 @@ CSS: Dùng CSS Grid để bố cục và tạo kiểu cho modal.
 JavaScript/jQuery: Dùng jQuery để hiển thị/ẩn modal và cập nhật ảnh lớn.
 
 Điểm chính: Nhấp vào ảnh nhỏ → mở modal với ảnh lớn; nhấp ra ngoài → đóng modal.//
+//Dynamic Image Gallery
+Develop a responsive image gallery featuring thumbnail previews and a modal for displaying full-size images.
+
+HTML: Create a grid of thumbnails and a modal div.
+
+CSS: Use CSS Grid for layout and style the modal.
+
+JavaScript/jQuery: Use jQuery to show/hide the modal and update the full-size image.
+
+Key Feature: Clicking a thumbnail opens the modal with the full-size image; clicking outside closes it.//
 
 
 
