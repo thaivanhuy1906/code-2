@@ -6,6 +6,14 @@ HTML: Tạo form nhập công việc và danh sách các công việc (ul).
 CSS: Thêm hiệu ứng hover và hiệu ứng khi công việc được đánh dấu hoàn thành.
 
 JavaScript/jQuery: Dùng jQuery để xử lý thêm, xóa và cập nhật trạng thái công việc.//
+//Interactive To-Do List
+Create a to-do list that allows users to add, remove, and mark tasks as complete, featuring a clean and responsive design.
+
+HTML: Structure a form for task input and an unordered list for tasks.
+
+CSS: Style the list with hover effects and a completed task strikethrough.
+
+JavaScript/jQuery: Use jQuery to handle task addition, removal, and toggling completion.//
 
 
 <!DOCTYPE html>
