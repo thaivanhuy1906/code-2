@@ -1,5 +1,7 @@
 //3. Form kiểm tra với phản hồi (Form Validation with Feedback)
 Tạo form liên hệ tên “Form Validation with Feedback” có kiểm tra dữ liệu theo thời gian thực và hiển thị phản hồi trực quan bằng JavaScript và CSS.//
+//Form Validation with Feedback
+Implement a contact form named “Form Validation with Feedback” with real-time validation and visual feedback using JavaScript and CSS.//
 
 
 <!DOCTYPE html>
