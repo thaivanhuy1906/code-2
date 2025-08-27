@@ -1,0 +1,91 @@
+//1. Danh sách công việc (Interactive To-Do List)
+Tạo một danh sách công việc cho phép người dùng thêm, xóa và đánh dấu công việc đã hoàn thành, có giao diện đẹp và phản hồi trực quan.
+
+HTML: Tạo form nhập công việc và danh sách các công việc (ul).
+
+CSS: Thêm hiệu ứng hover và hiệu ứng khi công việc được đánh dấu hoàn thành.
+
+JavaScript/jQuery: Dùng jQuery để xử lý thêm, xóa và cập nhật trạng thái công việc.//
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Interactive To-Do List</title>
+<style>
+  :root{--bg:#f5f7fb;--card:#fff;--accent:#2b8aef;--danger:#e74c3c}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto;display:flex;align-items:flex-start;justify-content:center;min-height:100vh;background:var(--bg);padding:28px}
+  .wrap{width:100%;max-width:720px;background:var(--card);border-radius:10px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+  h1{margin:0 0 12px;font-size:20px}
+  form{display:flex;gap:8px;margin-bottom:14px}
+  input[type="text"]{flex:1;padding:10px;border-radius:8px;border:1px solid #d9e0ea;font-size:15px}
+  button{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+  ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  li{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:8px;border:1px solid #eef3fb;background:#fff;transition:transform .12s}
+  li:hover{transform:translateY(-3px)}
+  .left{display:flex;align-items:center;gap:12px}
+  .task-text{cursor:pointer}
+  .completed .task-text{text-decoration:line-through;color:#898f98}
+  .actions{display:flex;gap:8px}
+  .small-btn{background:transparent;border:1px solid #ddd;padding:6px 8px;border-radius:6px;cursor:pointer}
+  .remove{background:var(--danger);color:#fff;border:0}
+  @media (max-width:420px){form{flex-direction:column} button{width:100%}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Interactive To-Do List</h1>
+    <form id="taskForm" aria-label="Add task">
+      <input id="taskInput" type="text" placeholder="Add a new task..." autocomplete="off" />
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="tasks"></ul>
+  </div>
+
+<script>
+  const form = document.getElementById('taskForm');
+  const input = document.getElementById('taskInput');
+  const list = document.getElementById('tasks');
+  const STORAGE_KEY = 'demo_todo_v1';
+
+  // load saved
+  let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  function render(){
+    list.innerHTML = '';
+    tasks.forEach((t, i) => {
+      const li = document.createElement('li');
+      if(t.done) li.classList.add('completed');
+      const left = document.createElement('div'); left.className='left';
+      const checkbox = document.createElement('input'); checkbox.type='checkbox'; checkbox.checked = t.done;
+      checkbox.addEventListener('change', ()=>{ tasks[i].done = checkbox.checked; save(); render(); });
+      const span = document.createElement('div'); span.className='task-text'; span.textContent = t.text;
+      span.addEventListener('click', ()=>{ tasks[i].done = !tasks[i].done; save(); render(); });
+      left.append(checkbox, span);
+
+      const actions = document.createElement('div'); actions.className='actions';
+      const del = document.createElement('button'); del.textContent='Delete'; del.className='remove';
+      del.addEventListener('click', ()=>{ tasks.splice(i,1); save(); render(); });
+      actions.append(del);
+
+      li.append(left, actions);
+      list.appendChild(li);
+    });
+  }
+  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const v = input.value.trim(); if(!v) return;
+    tasks.unshift({ text: v, done: false });
+    save(); render();
+    input.value = ''; input.focus();
+  });
+
+  // initial render
+  render();
+</script>
+</body>
+</html>
