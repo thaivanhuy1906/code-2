@@ -6,6 +6,14 @@ HTML: Tạo câu hỏi với radio button.
 CSS: Tô màu khi trả lời đúng/sai.
 
 JavaScript/jQuery: Dùng jQuery để kiểm tra câu trả lời, tính điểm và hiển thị kết quả.//
+//Interactive Quiz Application
+Create a multiple-choice quiz with a score tracker and result display.
+
+HTML: Structure questions with radio buttons.
+
+CSS: Style questions and highlight correct/incorrect answers.
+
+JavaScript/jQuery: Use jQuery to track answers, calculate scores, and display results.//
 
 
 
