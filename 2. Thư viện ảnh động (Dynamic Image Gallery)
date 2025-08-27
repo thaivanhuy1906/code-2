@@ -1,0 +1,86 @@
+//2. Thư viện ảnh động (Dynamic Image Gallery)
+Phát triển một thư viện ảnh phản hồi (responsive) có thumbnail (ảnh thu nhỏ) và một modal hiển thị ảnh kích thước lớn.
+
+HTML: Tạo lưới các ảnh thu nhỏ và một modal.
+
+CSS: Dùng CSS Grid để bố cục và tạo kiểu cho modal.
+
+JavaScript/jQuery: Dùng jQuery để hiển thị/ẩn modal và cập nhật ảnh lớn.
+
+Điểm chính: Nhấp vào ảnh nhỏ → mở modal với ảnh lớn; nhấp ra ngoài → đóng modal.//
+
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dynamic Image Gallery</title>
+<style>
+  body{font-family:system-ui,Arial;margin:0;background:#fafafa;padding:28px;display:flex;justify-content:center}
+  .wrap{max-width:1000px;width:100%}
+  h1{margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+  .thumb{cursor:pointer;border-radius:8px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+  .thumb img{width:100%;height:140px;object-fit:cover;display:block;transition:transform .25s}
+  .thumb:hover img{transform:scale(1.06)}
+  /* modal */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);z-index:50}
+  .modal.open{display:flex}
+  .modal-content{max-width:90%;max-height:90%;border-radius:8px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.6);background:#000}
+  .modal-content img{display:block;width:100%;height:auto;max-height:90vh;object-fit:contain}
+  .close{position:absolute;top:18px;right:18px;background:#fff;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;cursor:pointer}
+  @media (max-width:520px){.thumb img{height:110px}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Dynamic Image Gallery</h1>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content" id="modalContent">
+      <button class="close" id="closeBtn" aria-label="Close">✕</button>
+      <img id="modalImage" src="" alt="Full size">
+    </div>
+  </div>
+
+<script>
+  // sample images using picsum
+  const images = Array.from({length:12}, (_,i)=>({
+    src:`https://picsum.photos/id/${1010 + (i%30)}/1200/800`,
+    thumb:`https://picsum.photos/id/${1010 + (i%30)}/600/400`,
+    alt:`Image ${i+1}`
+  }));
+
+  const grid = document.getElementById('grid');
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImage');
+  const closeBtn = document.getElementById('closeBtn');
+
+  images.forEach((it, idx)=>{
+    const d = document.createElement('div'); d.className='thumb';
+    const img = document.createElement('img'); img.src = it.thumb; img.alt=it.alt;
+    d.appendChild(img);
+    d.addEventListener('click', ()=> openModal(idx));
+    grid.appendChild(d);
+  });
+
+  function openModal(i){
+    modalImg.src = images[i].src;
+    modalImg.alt = images[i].alt;
+    modal.classList.add('open');
+    // focus for accessibility
+    closeBtn.focus();
+  }
+  function closeModal(){ modal.classList.remove('open'); modalImg.src=''; }
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e)=> { if(e.target===modal) closeModal(); });
+  window.addEventListener('keydown', (e)=> { if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
