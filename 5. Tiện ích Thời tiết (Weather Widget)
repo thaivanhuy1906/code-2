@@ -7,6 +7,15 @@ CSS: Tạo kiểu widget với layout dạng card.
 
 JavaScript/jQuery: Dùng jQuery AJAX để lấy dữ liệu thời tiết và cập nhật DOM.//
 
+//Weather Widget
+Display a weather widget that fetches data from a mock API and updates dynamically.
+
+HTML: Container for weather data (temperature, condition).
+
+CSS: Style the widget with a card layout.
+
+JavaScript/jQuery: Use jQuery AJAX to fetch mock weather data and update the DOM.//
+
 
 
 <!DOCTYPE html>
