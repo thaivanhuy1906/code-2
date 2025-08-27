@@ -1,0 +1,90 @@
+//5. Tiện ích Thời tiết (Weather Widget)
+Hiển thị tiện ích thời tiết lấy dữ liệu từ một API thời tiết và tự động cập nhật.
+
+HTML: Container hiển thị dữ liệu thời tiết (nhiệt độ, tình trạng).
+
+CSS: Tạo kiểu widget với layout dạng card.
+
+JavaScript/jQuery: Dùng jQuery AJAX để lấy dữ liệu thời tiết và cập nhật DOM.//
+
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Weather Widget (Mock API)</title>
+<style>
+  body{font-family:system-ui,Arial;background:#f3f6fb;margin:0;display:flex;align-items:center;justify-content:center;height:100vh;padding:20px}
+  .card{width:320px;background:#fff;padding:18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.08);text-align:center}
+  .loc{font-weight:700;margin-bottom:6px}
+  .temp{font-size:48px;font-weight:800;margin:8px 0}
+  .cond{font-size:16px;color:#555;margin-bottom:12px}
+  .meta{display:flex;justify-content:space-around;color:#333}
+  .btn{margin-top:12px;padding:8px 12px;border-radius:8px;border:0;background:#2b8aef;color:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="card" role="region" aria-label="Weather widget">
+    <div class="loc" id="loc">--</div>
+    <div class="temp" id="temp">--°C</div>
+    <div class="cond" id="cond">--</div>
+    <div class="meta">
+      <div><strong id="hum">--%</strong><div style="font-size:12px">Humidity</div></div>
+      <div><strong id="wind">--</strong><div style="font-size:12px">Wind</div></div>
+    </div>
+    <button class="btn" id="refresh">Refresh</button>
+  </div>
+
+<script>
+  // Mock API: simulates network delay and returns random weather
+  function mockFetchWeather(location='Ho Chi Minh'){
+    return new Promise(resolve=>{
+      setTimeout(()=>{
+        const temp = (20 + Math.random()*12).toFixed(1);
+        const conds = ['Sunny','Cloudy','Partly cloudy','Rain','Thunderstorms','Clear night'];
+        const cond = conds[Math.floor(Math.random()*conds.length)];
+        resolve({
+          location,
+          temperature: temp,
+          condition: cond,
+          humidity: Math.round(40 + Math.random()*50),
+          wind: (Math.round(50 + Math.random()*80)/10) + ' m/s',
+          updated: Date.now()
+        });
+      }, 700 + Math.random()*700);
+    });
+  }
+
+  const locEl = document.getElementById('loc');
+  const tempEl = document.getElementById('temp');
+  const condEl = document.getElementById('cond');
+  const humEl = document.getElementById('hum');
+  const windEl = document.getElementById('wind');
+  const refresh = document.getElementById('refresh');
+
+  async function updateWeather(){
+    refresh.disabled = true; refresh.textContent = 'Loading...';
+    try{
+      const data = await mockFetchWeather('Ho Chi Minh City');
+      locEl.textContent = data.location;
+      tempEl.textContent = `${data.temperature}°C`;
+      condEl.textContent = data.condition;
+      humEl.textContent = `${data.humidity}%`;
+      windEl.textContent = data.wind;
+    }catch(e){
+      locEl.textContent = 'Error';
+      condEl.textContent = 'Could not fetch';
+    }finally{
+      refresh.disabled = false; refresh.textContent = 'Refresh';
+    }
+  }
+
+  refresh.addEventListener('click', updateWeather);
+  // auto update every 15s for demo:
+  updateWeather();
+  setInterval(updateWeather, 15000);
+</script>
+</body>
+</html>
